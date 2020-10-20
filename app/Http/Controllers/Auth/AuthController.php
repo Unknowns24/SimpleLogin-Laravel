@@ -45,9 +45,14 @@ class AuthController extends Controller
 
         $credentials = $req->only('email', 'password');
 
-        Auth::attempt($credentials, $rememberMe);
-
-        return redirect($this->redirectTo);
+        if (Auth::attempt($credentials, $rememberMe))
+        {
+            return redirect($this->redirectTo);
+        }
+        else
+        {
+            return redirect()->back()->withErrors(['login' => 'Los datos ingresados son incorrectos o no tienes permiso para loguearte!']);
+        }
     }
 
     public function register(Request $req)

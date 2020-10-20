@@ -25,15 +25,9 @@
                                 @csrf
                                 <h1 class="h3 mb-3 font-weight-normal">Login</h1>
                                 
-                                @error('email')
+                                @error('login')
                                     <div class="alert alert-danger" role="alert">
-                                        <strong>Las credenciales ingresadas no coinciden o no tienes permiso para loguearte!</strong>
-                                    </div>
-                                @enderror
-
-                                @error('password')
-                                    <div class="alert alert-danger" role="alert">
-                                        <strong>Las credenciales ingresadas no coinciden o no tienes permiso para loguearte!</strong>
+                                        <strong>{{$message}}</strong>
                                     </div>
                                 @enderror
 
@@ -43,7 +37,7 @@
                                             <i class="fas fa-user"></i>
                                         </span>
                                     </div>
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Direccion de Email" required>
+                                    <input id="email" type="email" class="form-control @error('login') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Direccion de Email" required>
                                 </div>
 
                                 <div class="input-group mb-2 mx-auto" style="max-width: 300px;">
@@ -53,7 +47,7 @@
                                         </span>
                                     </div>
                                     <input name="password" id="password" type="hidden">
-                                    <input name="pass" id="pass" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" required>
+                                    <input name="pass" id="pass" type="password" class="form-control @error('login') is-invalid @enderror" placeholder="Contraseña" required>
                                 </div>
                                 
                                 <div class="input-group mx-auto" style="max-width: 300px;">
