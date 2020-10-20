@@ -12,6 +12,20 @@
         <link rel="stylesheet" href="{{url('/')}}/plugins/fontawesome-free/css/all.min.css">
         <link rel="stylesheet" href="{{url('/')}}/dist/css/adminlte.min.css">
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+        <style>
+            .short, .weak {
+                color: red;
+            }
+
+            .good {
+                color: orangered;
+            }
+
+            .strong {
+                color: green;
+            }
+        </style>
     </head>
 
 
@@ -75,19 +89,23 @@
                                         <i class="fas fa-lock"></i>
                                         </span>
                                     </div>
-                                    <input name="password" id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" required>
+                                    <input name="pass" id="pass" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" required>
+                                    <input name="password" id="password" type="hidden">
                                 </div>
-
-                                <div class="input-group mb-2 mx-auto" style="max-width: 300px;">
+                                
+                                <div class="input-group mb-2 mx-auto mt-2" style="max-width: 300px;">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">
                                         <i class="fas fa-unlock"></i>
                                         </span>
                                     </div>
-                                    <input id="password-confirm" name="password_confirmation" type="password" class="form-control" placeholder="Repita Contraseña" required autocomplete="new-password">
+                                    <input id="pass-confirm" name="pass_confirmation" type="password" class="form-control" placeholder="Repita Contraseña" required autocomplete="new-password">
+                                    <input id="password-confirm" name="password_confirmation" type="hidden">
                                 </div>
+                                
+                                <span id="confirm" class="text-center center justify-content-center"></span>
                             
-                                <div class="input-group mx-auto" style="max-width: 300px;">
+                                <div class="input-group mx-auto mt-2" style="max-width: 300px;">
                                     <button class="btn btn-lg btn-primary btn-block" id="submit-btn">Registrarse</button>
                                 </div>
                                 <br>
@@ -105,16 +123,137 @@
     </body>
 
     <script src="{{url('/')}}/plugins/jquery/jquery.min.js"></script>
-    <script src="{{url('/')}}/plugins/md5/main.js"></script>
     <script src="{{url('/')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{url('/')}}/plugins/md5/main.js"></script>
 
     <script>
-        $('#register').submit(function() {
-            var password = document.getElementById('password');
-            password.value = MD5(password.value);
+        $(document).ready(function() {
 
-            var password_confirm = document.getElementById('password-confirm');
-            password_confirm.value = MD5(password_confirm.value);
+            $('#pass').keyup(function()
+            {
+                $('#confirm').html(checkStrength($('#pass').val()));
+            }); 
+
+            $('#pass-confirm').keyup(function()
+            {
+                $('#confirm').html(chekEqual($('#pass').val(), $('#pass-confirm').val()));
+            }); 
+
+            function chekEqual(str1, str2)
+            {
+                if (str1 != str2)
+                {
+                    $('#confirm').removeClass();
+                    $('#confirm').addClass('short');
+                    return "Las contraseñas no coinciden!";
+                }
+
+                return '';
+            }
+
+            function checkStrength(password, b = false)
+            {
+                //initial strength
+                var strength = 0
+
+                //if the password length is less than 6, return message.
+                if (password.length < 6) {
+                    if (b == false)
+                    {
+                        $('#confirm').removeClass()
+                        $('#confirm').addClass('short')
+                        return 'Contraseña muy corta!'
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                //length is ok, lets continue.
+
+                //if length is 8 characters or more, increase strength value
+                if (password.length > 7) strength += 1
+
+                //if password contains both lower and uppercase characters, increase strength value
+                if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/))  strength += 1
+
+                //if it has numbers and characters, increase strength value
+                if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/))  strength += 1 
+
+                //if it has one special character, increase strength value
+                if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/))  strength += 1
+
+                //if it has two special characters, increase strength value
+                if (password.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,",%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+
+                //now we have calculated strength value, we can return messages
+
+                //if value is less than 2
+                if (b == false) 
+                {
+                    if (strength < 2 ) {
+                        $('#confirm').removeClass()
+                        $('#confirm').addClass('weak')
+                        return 'Contraseña muy Debil!'
+                    } else if (strength == 2 ) {
+                        $('#confirm').removeClass()
+                        $('#confirm').addClass('good')
+                        return 'Contraseña Aceptable!'
+                    } else {
+                        $('#confirm').removeClass()
+                        $('#confirm').addClass('strong')
+                        return 'Contraseña Segura!'
+                    }    
+                }
+                else
+                {
+                    if (strength < 2 ) 
+                    {
+                        return false;
+                    } 
+                    else if (strength == 2 ) 
+                    {
+                        return true;
+                    } 
+                    else 
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            $('#register').click(function(e) {
+                e.preventDefault();
+
+                var password = document.getElementById('pass');
+                var password_confirm = document.getElementById('pass-confirm');
+                document.getElementById("confirm").innerHTML = "";
+
+                if(checkStrength(password.value, true) == true) 
+                {
+                    if (password.value != password_confirm.value) 
+                    {
+                        $('#confirm').removeClass();
+                        $('#confirm').addClass('short');
+                        document.getElementById('confirm').innerHTML = "Las contraseñas no coinciden!";
+                        return;
+                    }
+                }
+                else
+                {
+                    $('#confirm').html(checkStrength($('#pass').val()));
+                    return;
+                }
+
+                var passwordHidden = document.getElementById('password');
+                passwordHidden.value = MD5(password.value);
+                
+                var password_confirmHidden = document.getElementById('password-confirm');
+                password_confirmHidden.value = MD5(password_confirm.value);
+                
+                $("#register").submit();
+            });
         });
     </script>
 </html>

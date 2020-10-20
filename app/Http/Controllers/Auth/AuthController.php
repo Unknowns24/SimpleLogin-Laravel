@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public $redirectTo = '/';
+    protected $redirectTo = '/';
 
     public function loginForm() 
     {
@@ -35,7 +35,7 @@ class AuthController extends Controller
 
         $req->validate([
             'email' => 'required|email:rfc,dns',
-            'password' => 'required|min:10',
+            'password' => 'required|min:32|max:32',
         ]);
         
         if (Request('remember') )
@@ -59,7 +59,7 @@ class AuthController extends Controller
         $req->validate([
             'username' => 'required|max:100|unique:users,name',
             'email' => 'required|email:rfc,dns|unique:users,email',
-            'password' => 'required|min:10|confirmed',
+            'password' => 'required|min:32|max:32|confirmed',
         ]);
         
         $user = new User();
@@ -74,7 +74,7 @@ class AuthController extends Controller
 
         Auth::attempt($credentials);
 
-        return redirect('login');
+        return redirect($this->redirectTo);
     }
 
     public function logout()

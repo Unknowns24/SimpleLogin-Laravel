@@ -52,7 +52,8 @@
                                         <i class="fas fa-lock"></i>
                                         </span>
                                     </div>
-                                    <input name="password" id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" required>
+                                    <input name="password" id="password" type="hidden">
+                                    <input name="pass" id="pass" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" required>
                                 </div>
                                 
                                 <div class="input-group mx-auto" style="max-width: 300px;">
@@ -82,8 +83,10 @@
 
         <script>
             $('#login').submit(function() {
-                var password = document.getElementById('password');
-                password.value = MD5(password.value);
+                var password = document.getElementById('pass');
+                var passwordHidden = document.getElementById('password');
+                passwordHidden.value = MD5(password.value);
+                password.value = null;
             })
         </script>
     </body>
