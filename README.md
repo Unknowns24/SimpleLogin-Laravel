@@ -44,7 +44,7 @@ Para esto moveras el controlador AuthController ubicado en app/Https/Controllers
 Para esto importaremos las vistas del sistema de login, las cuales se encuentran en resources/views/Auth y las debes implementar en la misma ubicacion en tu proyecto. 
 
 4. ***Cambio en el AuthServiceProvider.***  
-para el correcto funcionamiento del sistema debemos añadir el siguiente codigo en el archivo AuthServiceProvider.php que se encuentra en app/Providers: 
+para el correcto funcionamiento del sistema debemos añadir el siguiente codigo en el metodo **boot** del archivo AuthServiceProvider.php que se encuentra en app/Providers: 
 ```php
     Auth::provider('eloquent', function($app, array $config)
     {
