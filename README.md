@@ -46,6 +46,9 @@ Para esto importaremos las vistas del sistema de login, las cuales se encuentran
 4. ***Cambio en el AuthServiceProvider.***  
 para el correcto funcionamiento del sistema debemos añadir el siguiente codigo en el metodo **boot** del archivo AuthServiceProvider.php que se encuentra en app/Providers: 
 ```php
+    use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+    use Illuminate\Support\Facades\Auth;
+
     Auth::provider('eloquent', function($app, array $config)
     {
         return new class($app['hash'], $config['model']) extends \Illuminate\Auth\EloquentUserProvider
