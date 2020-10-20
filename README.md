@@ -14,7 +14,7 @@ En este Login los passwords son encriptados por los clientes por lo que la infor
 
 ### Instalacion en otros proyectos
 
-0. (Opcional) Crear proyecto.
+0. ***(Opcional) Crear proyecto.***
 
 Si tenemos el instalador lo haremos asi:
 ```
@@ -25,7 +25,7 @@ Si no lo podremos hacer con composer de esta forma:
 composer create-project --prefer-dist laravel/laravel blog
 ```
 
-1. Se ingresa en el archivo routes/web.php las siguientes lineas de codigo: 
+1. ***Se ingresa en el archivo routes/web.php las siguientes lineas de codigo:***
 ```php
 use App\Http\Controllers\Auth\AuthController;
 
@@ -37,13 +37,13 @@ Route::post('register', [ AuthController::class,  'register'      ])->name('regi
 Route::post('logout',   [ AuthController::class,  'logout'        ])->name('logout');
 ```
 
-2. Creacion del Controlador.
+2. ***Creacion del Controlador.***
 Para esto moveras el controlador AuthController ubicado en app/Https/Controllers/Auth a tu proyecto, si cambiaras la ubicacion no olvides de ingresar correctamente el namespace
 
-3. Vistas.
+3. ***Vistas.***
 Para esto importaremos las vistas del sistema de login, las cuales se encuentran en resources/views/Auth y las debes implementar en la misma ubicacion en tu proyecto. 
 
-4. Cambio en el AuthServiceProvider.
+4. ***Cambio en el AuthServiceProvider.***
 para el correcto funcionamiento del sistema debemos añadir el siguiente codigo en el archivo AuthServiceProvider.php que se encuentra en app/Providers: 
 ```php
     Auth::provider('eloquent', function($app, array $config)
@@ -66,4 +66,4 @@ para el correcto funcionamiento del sistema debemos añadir el siguiente codigo 
 
 ## Creadores
 
-Unknowns.
+(Unknowns)[https://github.com/Unknowns24].
