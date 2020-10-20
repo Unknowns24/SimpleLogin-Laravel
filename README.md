@@ -67,6 +67,9 @@ para el correcto funcionamiento del sistema debemos añadir el siguiente codigo 
     });
 ```
 
+5. ***Instalar el Plugin MD5***  
+Como ultimo paso debemos copiar la carpeta MD5 que se encuentra en public/plugins/MD5 a la misma ubicacion pero en nuestro proyecto.
+
 ## Creadores
 
 [Unknowns](https://github.com/Unknowns24).
