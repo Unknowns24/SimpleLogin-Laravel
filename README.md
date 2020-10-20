@@ -37,13 +37,13 @@ Route::post('register', [ AuthController::class,  'register'      ])->name('regi
 Route::post('logout',   [ AuthController::class,  'logout'        ])->name('logout');
 ```
 
-2. ***Creacion del Controlador.***
+2. ***Creacion del Controlador.***  
 Para esto moveras el controlador AuthController ubicado en app/Https/Controllers/Auth a tu proyecto, si cambiaras la ubicacion no olvides de ingresar correctamente el namespace
 
-3. ***Vistas.***
+3. ***Vistas.***  
 Para esto importaremos las vistas del sistema de login, las cuales se encuentran en resources/views/Auth y las debes implementar en la misma ubicacion en tu proyecto. 
 
-4. ***Cambio en el AuthServiceProvider.***
+4. ***Cambio en el AuthServiceProvider.***  
 para el correcto funcionamiento del sistema debemos añadir el siguiente codigo en el archivo AuthServiceProvider.php que se encuentra en app/Providers: 
 ```php
     Auth::provider('eloquent', function($app, array $config)
