@@ -108,6 +108,19 @@ class User extends Authenticatable implements MustVerifyEmail  // Aqui implement
 8. ***Instalar el Plugin MD5***  
 Como ultimo paso debemos copiar la carpeta MD5 que se encuentra en public/plugins/MD5 a la misma ubicacion pero en nuestro proyecto.
 
-## Creadores
+###  Ejemplo de aplicacion
+__En caso de descargar el proyecto hemos proporcionado los metodos para poder hacerle pruebas pertinentes al sistema.__
+
+__**Verificacion de emails**__
+
+- Ejemplo de prueba. 
+Para esto hemos creado una ruta de prueba, la ruta home, donde se necesitara un login previo para poder acceder y a la cual aquellos usuarios ya verificados no podran entrar, en esta sera visible el mensaje "Se necesita verificar el email" con sus acciones pertinentes    
+
+- Ejemplo de aplicacion. 
+Para poder chequear si un usuario se encuentra o no verificado a traves de email, lo que se debe hacer es llamar al trait importado del proyecto el cual es `app/Traits/VerificationMailTrait` y hacer uso de la funcion `emailValidated(userID)`, retorna un booleano.
+
+
+## Desarrolladores
 
 [Unknowns](https://github.com/Unknowns24).
+[SERBice](https://github.com/SERBice).
