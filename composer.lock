@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92006abfb0afa0b489ce0387423263f1",
+    "content-hash": "fbefe2db4193d7e63c1ec50fdad1771e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4638,6 +4638,58 @@
             "time": "2020-07-13T06:12:54+00:00"
         },
         {
+            "name": "unk/praesidium",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:Unknowns24/Praesidium-Laravel.git",
+                "reference": "67bf7d66b0f911ccc3dfcc75305736f54be04265"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Unknowns24/Praesidium-Laravel/zipball/67bf7d66b0f911ccc3dfcc75305736f54be04265",
+                "reference": "67bf7d66b0f911ccc3dfcc75305736f54be04265",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^8.0",
+                "illuminate/support": "^8.0",
+                "laravel/framework": "^8.0",
+                "php": "^7.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "UNK\\Praesidium\\PraesidiumServiceProvider"
+                    ],
+                    "aliases": {
+                        "Praesidium": "UNK\\Praesidium\\Facades\\PraesidiumFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "UNK\\Praesidium\\": "src/"
+                },
+                "classmap": [
+                    "src/database/seeders"
+                ]
+            },
+            "authors": [
+                {
+                    "name": "Unknowns",
+                    "email": "unknowns0074@gmail.com"
+                }
+            ],
+            "description": "Sistema de permisos y roles para laravel 8.0",
+            "support": {
+                "source": "https://github.com/Unknowns24/Praesidium-Laravel/tree/master",
+                "issues": "https://github.com/Unknowns24/Praesidium-Laravel/issues"
+            },
+            "time": "2020-11-26T23:00:59+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.2.0",
             "source": {
@@ -7183,7 +7235,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "unk/praesidium": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

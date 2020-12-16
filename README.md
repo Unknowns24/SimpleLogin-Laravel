@@ -11,6 +11,7 @@ En este Login los passwords son encriptados por los clientes por lo que la infor
 - Composer.
 - Laravel.
 - MySQL.
+- [Praesidium](https://github.com/Unknowns24/Praesidium-Laravel)
 
 ### Instalacion en otros proyectos
 
@@ -30,20 +31,30 @@ composer create-project --prefer-dist laravel/laravel blog
 use App\Http\Controllers\Auth\AuthController;
 
 // Auth Routes 
-Route::get('login',     [ AuthController::class,  'loginForm'     ])->name('login');
-Route::get('register',  [ AuthController::class,  'registerForm'  ])->name('register');
-Route::post('login',    [ AuthController::class,  'login'         ])->name('login');
-Route::post('register', [ AuthController::class,  'register'      ])->name('register');
-Route::post('logout',   [ AuthController::class,  'logout'        ])->name('logout');
+Route::get('login',                         [ AuthController::class,  'loginForm'     ])->name('login');
+Route::get('register',                      [ AuthController::class,  'registerForm'  ])->name('register');
+Route::get('/MailVerification',             [ AuthController::class,  'verification'  ])->name('verification.notice')->middleware('auth');
+Route::get('MailVerification/resend',       [ AuthController::class,  'ResendMail'    ])->name('mail.resend');
+Route::get('verifyMail/{userid}/{code}',    [ AuthController::class,  'verifyMail'    ])->name('mail.verify');
+
+Route::post('login',                        [ AuthController::class,  'login'         ])->name('login');
+Route::post('register',                     [ AuthController::class,  'register'      ])->name('register');
+Route::post('logout',                       [ AuthController::class,  'logout'        ])->name('logout');
 ```
 
 2. ***Creacion del Controlador.***  
-Para esto moveras el controlador AuthController ubicado en app/Https/Controllers/Auth a tu proyecto, si cambiaras la ubicacion no olvides de ingresar correctamente el namespace
+Para esto moveras el controlador `AuthController` ubicado en app/Https/Controllers/Auth a tu proyecto, si cambiaras la ubicacion no olvides de ingresar correctamente el namespace
 
 3. ***Vistas.***  
-Para esto importaremos las vistas del sistema de login, las cuales se encuentran en resources/views/Auth y las debes implementar en la misma ubicacion en tu proyecto. 
+Para esto importaremos las vistas del sistema de login, las cuales se encuentran en `resources/views/auth` y en `resources/views/emails`. Luego las debes implementar en la misma ubicacion en tu proyecto. 
 
-4. ***Cambio en el AuthServiceProvider.***  
+4. ***Email.***
+En este paso debemos importar a nuestro proyecto la carpeta `app/Mail` y su contenido a la misma ubicacion pero en nuestro proyecto.
+
+5. ***Traits.***
+En este paso debemos importar la carpeta `app/Traits` con su contenido a nuestro proyecto.
+
+6. ***Cambio en el AuthServiceProvider.***  
 para el correcto funcionamiento del sistema debemos añadir el siguiente codigo en el metodo **boot** del archivo AuthServiceProvider.php que se encuentra en app/Providers: 
 ```php
     use Illuminate\Contracts\Auth\Authenticatable as UserContract;
@@ -67,7 +78,34 @@ para el correcto funcionamiento del sistema debemos añadir el siguiente codigo 
     });
 ```
 
-5. ***Instalar el Plugin MD5***  
+7. ***Implementacion de la verificacion de Email.***  
+Para poder habilitar los middlewares como `verified` lo que se debera hacer es añadir en el Modelo `User.php` ubicado en `app/Models` el siguiente codigo:  
+```php 
+implements MustVerifyEmail
+```  
+Ejemplo de como quedaría:
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use UNK\Praesidium\Traits\PraesidiumTrait as Praesidium; 
+
+class User extends Authenticatable implements MustVerifyEmail  // Aqui implementamos el Modelo MustVerifyEmail
+{
+    use HasFactory, Notifiable, Praesidium;
+
+    /* 
+        Default user model code
+    */
+}
+```
+
+8. ***Instalar el Plugin MD5***  
 Como ultimo paso debemos copiar la carpeta MD5 que se encuentra en public/plugins/MD5 a la misma ubicacion pero en nuestro proyecto.
 
 ## Creadores
