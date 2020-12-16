@@ -108,6 +108,12 @@ class User extends Authenticatable implements MustVerifyEmail  // Aqui implement
 8. ***Instalar el Plugin MD5***  
 Como ultimo paso debemos copiar la carpeta MD5 que se encuentra en public/plugins/MD5 a la misma ubicacion pero en nuestro proyecto.
 
+9. ***Archivo de autoload***
+Al haber metido tantos archivos nuevos en nuestro proyecto para poder terminar con la instalacion deberemos ejecutar el siguiente comando:
+```
+composer dump-autoload
+```
+
 ###  Ejemplo de aplicacion
 __En caso de descargar el proyecto hemos proporcionado los metodos para poder hacerle pruebas pertinentes al sistema.__
 
