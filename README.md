@@ -128,5 +128,5 @@ Para poder chequear si un usuario se encuentra o no verificado a traves de email
 
 ## Desarrolladores
 
-[Unknowns](https://github.com/Unknowns24).
+[Unknowns](https://github.com/Unknowns24).  
 [SERBice](https://github.com/SERBice).
