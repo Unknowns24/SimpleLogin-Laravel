@@ -8,11 +8,11 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Validator;
 
-class VerificationMail extends Mailable
+class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $subjet = "Activación de Cuenta";
+    public $subjet = "Cambiar Contraseña";
     public $data;
 
     /**
@@ -45,6 +45,6 @@ class VerificationMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.verificationMail');
+        return $this->markdown('emails.ResetPasswordMail');
     }
 }

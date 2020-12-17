@@ -19,16 +19,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Auth Routes 
-Route::get('login',     [ AuthController::class,  'loginForm'     ])->name('login');
-Route::get('register',  [ AuthController::class,  'registerForm'  ])->name('register');
-Route::get('/MailVerification',             [ AuthController::class,  'verification'  ])->middleware('auth')->name('verification.notice');
-Route::get('MailVerification/resend',       [ AuthController::class,  'ResendMail'    ])->name('mail.resend');
-Route::get('verifyMail/{userid}/{code}',    [ AuthController::class,  'verifyMail'    ])->name('mail.verify');
+/////////////////
+// Auth Routes //
+/////////////////
 
-Route::post('login',    [ AuthController::class,  'login'         ])->name('login');
-Route::post('register', [ AuthController::class,  'register'      ])->name('register');
-Route::post('logout',   [ AuthController::class,  'logout'        ])->name('logout');
+// Login Routes
+Route::get('login',                          [ AuthController::class,  'loginForm'                  ])->name('login');
+Route::post('login',                         [ AuthController::class,  'login'                      ])->name('login');
+
+// Register Routes
+Route::get('register',                       [ AuthController::class,  'registerForm'               ])->name('register');
+Route::post('register',                      [ AuthController::class,  'register'                   ])->name('register');
+
+// Password Reset Routes
+Route::get('forgot-password',                [ AuthController::class,  'forgetPassForm'             ])->name('password.forgot');
+Route::get('reset-password',                 [ AuthController::class,  'sendResetPasswordEmail'     ])->name('reset.sendMail');
+Route::get('reset-password/{userid}/{code}', [ AuthController::class,  'verifyPasswordReset'        ])->name('reset.verify');
+Route::post('reset-password/{userid}',       [ AuthController::class,  'ResetPassword'              ])->name('reset.password');
+
+// Mail Verification Routes
+Route::get('/MailVerification',              [ AuthController::class,  'verification'               ])->name('verification.notice')->middleware('auth');
+Route::get('MailVerification/resend',        [ AuthController::class,  'ResendMail'                 ])->name('mail.resend');
+Route::get('verifyMail/{userid}/{code}',     [ AuthController::class,  'verifyMail'                 ])->name('mail.verify');
+
+// Logout Route
+Route::post('logout',                        [ AuthController::class,  'logout'                     ])->name('logout');
 
 // Route to test verification 
 Route::get('home', function() {

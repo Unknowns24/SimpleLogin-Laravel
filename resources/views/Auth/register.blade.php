@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-        <title>test</title>
+        <title><?php echo env('APP_NAME') ?> - Registro de Usuario</title>
         <!-- Icon -->
         <link rel="icon" href="{{url('/')}}/dist/img/logo.png">
         <link rel="stylesheet" href="{{url('/')}}/plugins/fontawesome-free/css/all.min.css">
@@ -120,140 +120,140 @@
                 </div>
             </div>
         </div>
-    </body>
 
-    <script src="{{url('/')}}/plugins/jquery/jquery.min.js"></script>
-    <script src="{{url('/')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="{{url('/')}}/plugins/md5/main.js"></script>
+        <script src="{{url('/')}}/plugins/jquery/jquery.min.js"></script>
+        <script src="{{url('/')}}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{{url('/')}}/plugins/md5/main.js"></script>
 
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
 
-            $('#pass').keyup(function()
-            {
-                $('#confirm').html(checkStrength($('#pass').val()));
-            }); 
-
-            $('#pass-confirm').keyup(function()
-            {
-                $('#confirm').html(chekEqual($('#pass').val(), $('#pass-confirm').val()));
-            }); 
-
-            function chekEqual(str1, str2)
-            {
-                if (str1 != str2)
+                $('#pass').keyup(function()
                 {
-                    $('#confirm').removeClass();
-                    $('#confirm').addClass('short');
-                    return "Las contraseñas no coinciden!";
-                }
+                    $('#confirm').html(checkStrength($('#pass').val()));
+                }); 
 
-                return '';
-            }
-
-            function checkStrength(password, b = false)
-            {
-                //initial strength
-                var strength = 0
-
-                //if the password length is less than 6, return message.
-                if (password.length < 6) {
-                    if (b == false)
-                    {
-                        $('#confirm').removeClass()
-                        $('#confirm').addClass('short')
-                        return 'Contraseña muy corta!'
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-
-                //length is ok, lets continue.
-
-                //if length is 8 characters or more, increase strength value
-                if (password.length > 7) strength += 1
-
-                //if password contains both lower and uppercase characters, increase strength value
-                if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/))  strength += 1
-
-                //if it has numbers and characters, increase strength value
-                if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/))  strength += 1 
-
-                //if it has one special character, increase strength value
-                if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/))  strength += 1
-
-                //if it has two special characters, increase strength value
-                if (password.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,",%,&,@,#,$,^,*,?,_,~])/)) strength += 1
-
-                //now we have calculated strength value, we can return messages
-
-                //if value is less than 2
-                if (b == false) 
+                $('#pass-confirm').keyup(function()
                 {
-                    if (strength < 2 ) {
-                        $('#confirm').removeClass()
-                        $('#confirm').addClass('weak')
-                        return 'Contraseña muy Debil!'
-                    } else if (strength == 2 ) {
-                        $('#confirm').removeClass()
-                        $('#confirm').addClass('good')
-                        return 'Contraseña Aceptable!'
-                    } else {
-                        $('#confirm').removeClass()
-                        $('#confirm').addClass('strong')
-                        return 'Contraseña Segura!'
-                    }    
-                }
-                else
+                    $('#confirm').html(chekEqual($('#pass').val(), $('#pass-confirm').val()));
+                }); 
+
+                function chekEqual(str1, str2)
                 {
-                    if (strength < 2 ) 
-                    {
-                        return false;
-                    } 
-                    else if (strength == 2 ) 
-                    {
-                        return true;
-                    } 
-                    else 
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            $('#register').click(function(e) {
-                e.preventDefault();
-
-                var password = document.getElementById('pass');
-                var password_confirm = document.getElementById('pass-confirm');
-                document.getElementById("confirm").innerHTML = "";
-
-                if(checkStrength(password.value, true) == true) 
-                {
-                    if (password.value != password_confirm.value) 
+                    if (str1 != str2)
                     {
                         $('#confirm').removeClass();
                         $('#confirm').addClass('short');
-                        document.getElementById('confirm').innerHTML = "Las contraseñas no coinciden!";
-                        return;
+                        return "Las contraseñas no coinciden!";
                     }
-                }
-                else
-                {
-                    $('#confirm').html(checkStrength($('#pass').val()));
-                    return;
+
+                    return '';
                 }
 
-                var passwordHidden = document.getElementById('password');
-                passwordHidden.value = MD5(password.value);
-                
-                var password_confirmHidden = document.getElementById('password-confirm');
-                password_confirmHidden.value = MD5(password_confirm.value);
-                
-                $("#register").submit();
+                function checkStrength(password, b = false)
+                {
+                    //initial strength
+                    var strength = 0
+
+                    //if the password length is less than 6, return message.
+                    if (password.length < 6) {
+                        if (b == false)
+                        {
+                            $('#confirm').removeClass()
+                            $('#confirm').addClass('short')
+                            return 'Contraseña muy corta!'
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
+                    //length is ok, lets continue.
+
+                    //if length is 8 characters or more, increase strength value
+                    if (password.length > 7) strength += 1
+
+                    //if password contains both lower and uppercase characters, increase strength value
+                    if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/))  strength += 1
+
+                    //if it has numbers and characters, increase strength value
+                    if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/))  strength += 1 
+
+                    //if it has one special character, increase strength value
+                    if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/))  strength += 1
+
+                    //if it has two special characters, increase strength value
+                    if (password.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,",%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+
+                    //now we have calculated strength value, we can return messages
+
+                    //if value is less than 2
+                    if (b == false) 
+                    {
+                        if (strength < 2 ) {
+                            $('#confirm').removeClass()
+                            $('#confirm').addClass('weak')
+                            return 'Contraseña muy Debil!'
+                        } else if (strength == 2 ) {
+                            $('#confirm').removeClass()
+                            $('#confirm').addClass('good')
+                            return 'Contraseña Aceptable!'
+                        } else {
+                            $('#confirm').removeClass()
+                            $('#confirm').addClass('strong')
+                            return 'Contraseña Segura!'
+                        }    
+                    }
+                    else
+                    {
+                        if (strength < 2 ) 
+                        {
+                            return false;
+                        } 
+                        else if (strength == 2 ) 
+                        {
+                            return true;
+                        } 
+                        else 
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                $('#register').click(function(e) {
+                    e.preventDefault();
+
+                    var password = document.getElementById('pass');
+                    var password_confirm = document.getElementById('pass-confirm');
+                    document.getElementById("confirm").innerHTML = "";
+
+                    if(checkStrength(password.value, true) == true) 
+                    {
+                        if (password.value != password_confirm.value) 
+                        {
+                            $('#confirm').removeClass();
+                            $('#confirm').addClass('short');
+                            document.getElementById('confirm').innerHTML = "Las contraseñas no coinciden!";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        $('#confirm').html(checkStrength($('#pass').val()));
+                        return;
+                    }
+
+                    var passwordHidden = document.getElementById('password');
+                    passwordHidden.value = MD5(password.value);
+                    
+                    var password_confirmHidden = document.getElementById('password-confirm');
+                    password_confirmHidden.value = MD5(password_confirm.value);
+                    
+                    $("#register").submit();
+                });
             });
-        });
-    </script>
+        </script>
+    </body>
 </html>

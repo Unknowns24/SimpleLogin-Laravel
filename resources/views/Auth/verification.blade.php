@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-        <title><?php echo env('COMPANY_NAME') ?> - Verificar Email</title>
+        <title><?php echo env('APP_NAME') ?> - Verificar Email</title>
         <!-- Icon -->
         <link rel="icon" href="{{url('/')}}/dist/img/logo.png">
         <link rel="stylesheet" href="{{url('/')}}/plugins/fontawesome-free/css/all.min.css">
@@ -55,7 +55,7 @@
                                     document.getElementById('logout-form').submit();
                                     return false;
                                 ">Cerrar Sesión</a>
-                                <a href="{{url('/')}}" class="btn btn-light">Volver</a>
+                                <a href="<?= (url()->previous() != Illuminate\Support\Facades\URL::current() ? url()->previous() : url('/')) ?>" class="btn btn-light">Volver</a>
 
                                 <form action="{{route('logout')}}" method="POST" id="logout-form" style="display: none"> @csrf </form>
                             @endif

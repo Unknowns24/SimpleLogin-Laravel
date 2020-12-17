@@ -21,7 +21,7 @@ class AuthController extends Controller
     public function loginForm() 
     {
         if(Auth::user()) {
-            return redirect($this->redirectTo);
+            return redirect(url($this->redirectTo));
         }
         
         return view('auth.login');
@@ -30,10 +30,19 @@ class AuthController extends Controller
     public function registerForm()
     {
         if(Auth::user()) {
-            return redirect($this->redirectTo);
+            return redirect(url($this->redirectTo));
         }
 
         return view('auth.register');
+    }
+
+    public function forgetPassForm()
+    {
+        if(Auth::user()) {
+            return redirect(url($this->redirectTo));
+        }
+
+        return view('auth.forgotpassword');
     }
 
     public function login(Request $req)
@@ -54,7 +63,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $rememberMe))
         {
-            return redirect($this->redirectTo);
+            return redirect(url($this->redirectTo));
         }
         else
         {
@@ -65,7 +74,7 @@ class AuthController extends Controller
     public function register(Request $req)
     {
         if(Auth::user()) {
-            return redirect($this->redirectTo);
+            return redirect(url($this->redirectTo));
         }
 
         $req->validate([
@@ -90,11 +99,11 @@ class AuthController extends Controller
         
         $credentials = $req->only('email', 'password');
 
-        $this->SendMail(request('email'));
+        $this->SendVerificationMail(request('email'));
 
         Auth::attempt($credentials);
 
-        return redirect($this->redirectTo);
+        return redirect(url($this->redirectTo));
     }
 
     public function logout()
@@ -113,10 +122,15 @@ class AuthController extends Controller
         }
         
         $userData = DB::select("SELECT `created_at`, `email`, `email_verified_at` FROM `users` WHERE `id` = ?", [$id]);
+
+        if (empty($userData))
+        {
+            return abort('403');
+        }
         
         if($userData[0]->email_verified_at != NULL)
         {
-            return redirect(url('/'));
+            return redirect(url($this->redirectTo));
         }
 
         $token = md5($userData[0]->email . $userData[0]->created_at);
@@ -126,9 +140,10 @@ class AuthController extends Controller
             $user = User::findOrFail($id);
             $user->email_verified_at = new Carbon();
             $user->update();
+            return view('auth.verification', ['validated' => true])->with(['success' => 'Tu correo se ha verificado satisfactoriamente!']);
         }
 
-        return view('auth.verification', ['validated' => true])->with(['success' => 'Tu correo se ha verificado satisfactoriamente!']);
+        return abort('403');
     }
 
     public function verification()
@@ -143,7 +158,7 @@ class AuthController extends Controller
             return view('auth.verification');
         }
         
-        return redirect(url('/'));
+        return redirect(url($this->redirectTo));
     }
 
     public function ResendMail()
@@ -155,12 +170,12 @@ class AuthController extends Controller
 
         if ($this->emailValidated(Auth::user()->id) == true) 
         {
-            return redirect(url('/'));
+            return redirect(url($this->redirectTo));
         }
 
         try
         {
-            if ($this->SendMail(User::findOrFail(Auth::user()->id)->email) == true)
+            if ($this->SendVerificationMail(User::findOrFail(Auth::user()->id)->email) == true)
             {
                 return back()->with('success', 'Se le ha reenviado el correo electronico');
             }
@@ -171,7 +186,84 @@ class AuthController extends Controller
         }
         catch(Exception $e)
         {
-            return back()->with('error', "Se produjo un error al intentar reenviarle el correo electronico, intente mas tarde!\n\nError: $e");
+            return back()->with('error', "Se produjo un error al intentar reenviarle el correo electronico, intente mas tarde!");
         }
+    }
+    
+    public function sendResetPasswordEmail()
+    {
+        if (Auth::check() == true)
+        {
+            return redirect(url($this->redirectTo));
+        } 
+
+        request()->validate([
+            'email' => 'required|email:rfc,dns',
+        ]);
+
+        try
+        {
+            if ($this->SendResetPasswordMail(request()->email) == true)
+            {
+                return back()->with('success', 'Revise su correo electronico');
+            }
+            else
+            {
+                return back()->with('error', 'Se produjo un error al intentar reenviarle el correo electronico, intente mas tarde!');
+            }
+        }
+        catch(Exception $e)
+        {
+            return back()->with('error', "Se produjo un error al intentar reenviarle el correo electronico, intente mas tarde!");
+        }
+    }
+
+    public function verifyPasswordReset($id, $code)
+    {
+        if (!is_numeric($id))
+        {
+            return abort('403');
+        }
+        
+        $userData = DB::select("SELECT `name`, `created_at`, `email`, `requested_at` FROM `users` WHERE `id` = ?", [$id]);
+
+        if (empty($userData))
+        {
+            return abort('403');
+        }
+        
+        if ($userData[0]->requested_at == NULL || $userData[0]->requested_at <= Carbon::createFromTimestamp(time() - 600)->toDateTimeString())
+        {
+            return view('auth.resetpassword', ['userToken' => NULL, 'id' => $id]);
+        }
+        
+        $token = md5($userData[0]->name . $userData[0]->email . $userData[0]->created_at);
+
+        if ($token == $code) 
+        {
+            return view('auth.resetpassword', ['userToken' => $token, 'id' => $id]);
+        }
+
+        return view('auth.resetpassword', ['userToken' => NULL, 'id' => $id]);
+    }
+
+    public function ResetPassword($id, Request $req)
+    {
+        if (Auth::check())
+        {
+            return abort('404');
+        }
+
+        $req->validate([
+            'password' => 'min:32|max:32|confirmed'
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->password = $req->password;
+        
+        $user->update();
+
+        return redirect(route('login'))->with('success', '¡La contraseña se ha actualizado correctamente!');
     }
 }

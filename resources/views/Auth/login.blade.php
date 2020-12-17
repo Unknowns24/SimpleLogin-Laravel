@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-        <title>test</title>
+        <title><?php echo env('APP_NAME') ?> - Inicio de Sesión</title>
         <!-- Icon -->
         <link rel="icon" href="{{url('/')}}/dist/img/logo.png">
         <link rel="stylesheet" href="{{url('/')}}/plugins/fontawesome-free/css/all.min.css">
@@ -25,6 +25,12 @@
                                 @csrf
                                 <h1 class="h3 mb-3 font-weight-normal">Login</h1>
                                 
+                                @if(session()->has('success'))
+                                    <div class="alert alert-success">
+                                        {{ session()->get('success') }}
+                                    </div>
+                                @endif
+
                                 @error('login')
                                     <div class="alert alert-danger" role="alert">
                                         <strong>{{$message}}</strong>
@@ -62,8 +68,9 @@
 
                                 <div class="row justify-content-center">
                                     <p>¿No tienes una cuenta? <a href="{{url('/')}}/register" class="link">¡Registrate ahora!</a></p>
+                                    <a href="{{url('/')}}/forgot-password" class="link">¿No recuerdas tu contraseña?</a>
                                 </div>
-                                <p class="mb-3 text-muted">© 2019 - <?=date("Y")?></p>
+                                <p class="mt-3 mb-3 text-muted">© 2019 - <?=date("Y")?></p>
                             </form>
                         </div>
                     </div>
