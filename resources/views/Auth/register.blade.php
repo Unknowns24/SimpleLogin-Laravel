@@ -89,7 +89,7 @@
                                         <i class="fas fa-lock"></i>
                                         </span>
                                     </div>
-                                    <input name="pass" id="pass" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" required>
+                                    <input id="pass" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Contraseña" required>
                                     <input name="password" id="password" type="hidden">
                                 </div>
                                 
@@ -99,7 +99,7 @@
                                         <i class="fas fa-unlock"></i>
                                         </span>
                                     </div>
-                                    <input id="pass-confirm" name="pass_confirmation" type="password" class="form-control" placeholder="Repita Contraseña" required autocomplete="new-password">
+                                    <input id="pass-confirm" type="password" class="form-control" placeholder="Repita Contraseña" required autocomplete="new-password">
                                     <input id="password-confirm" name="password_confirmation" type="hidden">
                                 </div>
                                 

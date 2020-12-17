@@ -47,7 +47,7 @@
                                         </span>
                                     </div>
                                     <input name="password" id="password" type="hidden">
-                                    <input name="pass" id="pass" type="password" class="form-control @error('login') is-invalid @enderror" placeholder="Contraseña" required>
+                                    <input id="pass" type="password" class="form-control @error('login') is-invalid @enderror" placeholder="Contraseña" required>
                                 </div>
                                 
                                 <div class="input-group mx-auto" style="max-width: 300px;">
@@ -80,7 +80,6 @@
                 var password = document.getElementById('pass');
                 var passwordHidden = document.getElementById('password');
                 passwordHidden.value = MD5(password.value);
-                password.value = null;
             })
         </script>
     </body>
