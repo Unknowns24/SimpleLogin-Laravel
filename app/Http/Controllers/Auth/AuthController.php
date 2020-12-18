@@ -54,6 +54,10 @@ class AuthController extends Controller
             'password' => 'required|min:32|max:32',
         ]);
         
+        $userEmail = $req->email;
+        
+        $req->merge(['email' => strtolower($userEmail)]); // Se pone en minusculas para una posterior compatibilidad
+
         if (Request('remember') )
         {
             $rememberMe = true;
@@ -82,7 +86,11 @@ class AuthController extends Controller
             'email' => 'required|email:rfc,dns|unique:users,email',
             'password' => 'required|min:32|max:32|confirmed',
         ]);
+
+        $userEmail = $req->email;
         
+        $req->merge(['email' => strtolower($userEmail)]); // Se pone en minusculas para una posterior compatibilidad
+
         $user = new User();
 
         $user->name = request('username');
@@ -237,7 +245,7 @@ class AuthController extends Controller
             return view('auth.resetpassword', ['userToken' => NULL, 'id' => $id]);
         }
         
-        $token = md5($userData[0]->name . $userData[0]->email . $userData[0]->created_at);
+        $token = md5(strtolower($userData[0]->name) . strtolower($userData[0]->email) . $userData[0]->created_at);
 
         if ($token == $code) 
         {

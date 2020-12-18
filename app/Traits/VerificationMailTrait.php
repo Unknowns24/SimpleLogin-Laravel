@@ -94,7 +94,7 @@ trait VerificationMailTrait
 
         $user->update();
 
-        $activationToken = md5($queryResult[0]->name . $userEmail . $queryResult[0]->created_at);
+        $activationToken = md5(strtolower($queryResult[0]->name) . strtolower($userEmail) . $queryResult[0]->created_at);
         
         $data = array(
             "username" => $queryResult[0]->name,
