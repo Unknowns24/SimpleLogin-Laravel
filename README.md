@@ -119,7 +119,7 @@ class User extends Authenticatable implements MustVerifyEmail  // Aqui implement
 8. ***Instalar el Plugin MD5***  
 Como ultimo paso debemos copiar la carpeta MD5 que se encuentra en public/plugins/MD5 a la misma ubicacion pero en nuestro proyecto.
 
-9. ***Agregar columna necesaria***
+9. ***Agregar columna necesaria***  
 Para el correcto funcionamiento del formulario `SimpleLogin` se debera agregar una columna en la tabla `users`, para esto deberemos usar el siguiente codigo sql
 ```sql
 ALTER TABLE `users` ADD `requested_at` TIMESTAMP NULL;
