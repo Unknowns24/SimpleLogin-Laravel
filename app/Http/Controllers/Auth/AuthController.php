@@ -209,6 +209,10 @@ class AuthController extends Controller
             'email' => 'required|email:rfc,dns',
         ]);
 
+        $userEmail = request()->email;
+        
+        request()->merge(['email' => strtolower($userEmail)]); // Se pone en minusculas para una posterior compatibilidad
+
         try
         {
             if ($this->SendResetPasswordMail(request()->email) == true)
