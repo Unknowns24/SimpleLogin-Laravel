@@ -109,12 +109,12 @@
                                     <button class="btn btn-lg btn-primary btn-block" id="submit-btn">Registrarse</button>
                                 </div>
                                 <br>
-
-                                <div class="row justify-content-center">
-                                    <p>¿Ya tienes una cuenta? <a href="{{url('/')}}/login" class="link">¡Inicia Sesion!</a></p>
-                                </div>
-                                <p class=" mb-3 text-muted">© 2019 - <?=date("Y")?></p>
                             </form>
+                            
+                            <div class="row justify-content-center">
+                                <p>¿Ya tienes una cuenta? <a href="{{url('/')}}/login" class="link">¡Inicia Sesion!</a></p>
+                            </div>
+                            <p class=" mb-3 text-muted">© 2019 - <?=date("Y")?></p>
                         </div>
                     </div>
                 </div>
